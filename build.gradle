@@ -1,6 +1,17 @@
 
 allprojects {
+    buildscript {
+        repositories {
+            mavenLocal()
+            mavenCentral()
+            jcenter()
+            maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+        }
 
+        dependencies {
+            classpath 'org.apache.commons:commons-csv:1.0'
+        }
+    }
     apply plugin: 'java'
 
     group 'com.github.aracwong'
@@ -27,3 +38,16 @@ allprojects {
         options.encoding = "UTF-8"
     }
 }
+
+//import org.apache.commons.csv.*
+//
+//task printCSV() {
+//    doLast {
+//        def records = CSVFormat.EXCEL.parse(new FileReader('D:/tmp/test.csv'))
+//        for (item in records) {
+//            print item.get(0) + ' '
+//            println item.get(1)
+//        }
+//
+//    }
+//}
