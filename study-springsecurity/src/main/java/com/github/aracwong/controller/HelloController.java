@@ -1,6 +1,7 @@
 package com.github.aracwong.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -11,13 +12,13 @@ public class HelloController {
         return "ok";
     }
 
-    @GetMapping("/index")
+    @PostMapping("/index")
     public String index() {
-        return "index";
+        return "index.html";
     }
 
-    @GetMapping("/error")
+    @PostMapping("/error")
     public String error() {
-        return "error";
+        return "error.html";
     }
 }
