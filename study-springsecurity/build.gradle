@@ -5,12 +5,21 @@ plugins {
 group 'com.github.aracwong'
 version '1.0.0-SNAPSHOT'
 
-repositories {
-    mavenCentral()
-}
+//repositories {
+//    mavenLocal()
+//    maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+//    mavenCentral()
+//    jcenter()
+//}
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.3.1.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.1.RELEASE'
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+    compile group: 'com.sun.xml.bind', name: 'jaxb-impl', version: '2.3.3'
+    compile group: 'com.sun.xml.bind', name: 'jaxb-core', version: '2.3.0'
+    compile group: 'javax.activation', name: 'activation', version: '1.1.1'
+
 }
