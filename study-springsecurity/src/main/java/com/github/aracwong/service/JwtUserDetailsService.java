@@ -18,7 +18,11 @@ public class JwtUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("JwtUserDetailsService:" + username);
         List<GrantedAuthority> authorityList = new ArrayList<>();
-        authorityList.add(new SimpleGrantedAuthority("USER"));
-        return new User(username,"$2a$10$PwelInA/Ywr9VhN1o65WK.eqPQKhEKu3edUdeqVRsb2J62YIROlwO", authorityList);
+        if ("user".equals(username)) {
+            authorityList.add(new SimpleGrantedAuthority("USER"));
+        } else if ("admin".equals(username)) {
+            authorityList.add(new SimpleGrantedAuthority("ADMIN"));
+        }
+        return new User(username, "$2a$10$PwelInA/Ywr9VhN1o65WK.eqPQKhEKu3edUdeqVRsb2J62YIROlwO", authorityList);
     }
 }

@@ -10,8 +10,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class JwtTokenUtil {
 
@@ -19,7 +21,9 @@ public class JwtTokenUtil {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("authorizes", userDetails.getAuthorities());
+        claims.put("username", userDetails.getUsername());
+        List<String> authorizes = userDetails.getAuthorities().stream().map(grantedAuthority -> grantedAuthority.getAuthority()).collect(Collectors.toList());
+        claims.put("authorizes", authorizes);
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
@@ -37,7 +41,7 @@ public class JwtTokenUtil {
     }
 
     private Date calculateExpirationDate(Date createdDate) {
-        return new Date(createdDate.getTime() + 3200L);
+        return new Date(createdDate.getTime() + 3600000L);
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
@@ -57,7 +61,7 @@ public class JwtTokenUtil {
         return claimsResolver.apply(claims);
     }
 
-    private Claims getAllClaimsFromToken(String token) {
+    public Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey("123456")
                 .parseClaimsJws(token)

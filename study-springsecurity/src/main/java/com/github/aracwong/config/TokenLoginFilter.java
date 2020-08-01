@@ -1,17 +1,12 @@
 package com.github.aracwong.config;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.util.JSONWrappedObject;
 import com.github.aracwong.utils.JwtTokenUtil;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -24,12 +19,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
-public class TokenFilter extends UsernamePasswordAuthenticationFilter {
+public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
 
-    public TokenFilter(AuthenticationManager authenticationManager) {
+    public TokenLoginFilter(AuthenticationManager authenticationManager) {
         this.setAuthenticationManager(authenticationManager);
         this.setFilterProcessesUrl("/auth/tokenLogin");
     }
@@ -79,4 +76,6 @@ public class TokenFilter extends UsernamePasswordAuthenticationFilter {
         writer.write(new ObjectMapper().writeValueAsString(result));
         writer.flush();
     }
+
+
 }
