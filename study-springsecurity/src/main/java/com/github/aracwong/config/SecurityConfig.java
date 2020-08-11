@@ -25,7 +25,6 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -55,20 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .exceptionHandling()
-                .accessDeniedHandler(new AccessDeniedHandler() {
-                    @Override
-                    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException)
-                            throws IOException, ServletException {
-                        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                        response.setCharacterEncoding("UTF-8");
-                        Map<String, Object> result = new HashMap<>();
-                        result.put("code", 401);
-                        result.put("msg", "拒绝访问");
-                        PrintWriter writer = response.getWriter();
-                        writer.write(new ObjectMapper().writeValueAsString(result));
-                        writer.flush();
-                    }
-                })
+                .accessDeniedHandler(accessDeniedHandler())
                 .and()
                 .csrf().disable();
     }
@@ -85,6 +71,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .password("$2a$10$PwelInA/Ywr9VhN1o65WK.eqPQKhEKu3edUdeqVRsb2J62YIROlwO")
 //                .roles("USER");
 //    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return (request, response, accessDeniedException) -> {
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setCharacterEncoding("UTF-8");
+            Map<String, Object> result = new HashMap<>();
+            result.put("code", 401);
+            result.put("msg", accessDeniedException.getMessage());
+            PrintWriter writer = response.getWriter();
+            writer.write(new ObjectMapper().writeValueAsString(result));
+            writer.flush();
+        };
+    }
 
 
 }
